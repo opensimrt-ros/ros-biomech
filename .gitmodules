@@ -1,0 +1,75 @@
+[submodule "ar_test"]
+	path = ar_test
+	url = git@gits-15.sys.kth.se:frekle/ar_test.git
+[submodule "ar_track_alvar"]
+	path = ar_track_alvar
+	url = git@gits-15.sys.kth.se:frekle/ar_track_alvar.git
+[submodule "brio_cam"]
+	path = brio_cam
+	url = git@gits-15.sys.kth.se:frekle/brio_cam.git
+[submodule "cometa_bridge"]
+	path = cometa_bridge
+	url = git@gits-15.sys.kth.se:frekle/cometa_bridge.git
+[submodule "custom_clock"]
+	path = custom_clock
+	url = git@gits-15.sys.kth.se:frekle/custom_clock.git
+[submodule "ddynamic_reconfigure"]
+	path = ddynamic_reconfigure
+	url = https://github.com/pal-robotics/ddynamic_reconfigure.git
+[submodule "demo_description"]
+	path = demo_description
+	url = git@gits-15.sys.kth.se:frekle/demo_description.git
+[submodule "eye_tracker"]
+	path = eye_tracker
+	url = git@gits-15.sys.kth.se:frekle/eye_tracker.git
+[submodule "gait1992_description"]
+	path = gait1992_description
+	url = git@gits-15.sys.kth.se:frekle/gait1992_description.git
+[submodule "human_state_publisher"]
+	path = human_state_publisher
+	url = git@gits-15.sys.kth.se:frekle/human_state_publisher.git
+[submodule "imu_tools"]
+	path = imu_tools
+	url = https://github.com/CCNYRoboticsLab/imu_tools.git
+[submodule "insoles/moticon_insoles"]
+	path = insoles/moticon_insoles
+	url = git@gits-15.sys.kth.se:frekle/moticon_insoles.git
+[submodule "insoles/test_moticon_insoles"]
+	path = insoles/test_moticon_insoles
+	url = git@gits-15.sys.kth.se:frekle/test_moticon_insoles.git
+[submodule "insoles/insole_msgs"]
+	path = insoles/insole_msgs
+	url = git@gits-15.sys.kth.se:frekle/insole_msgs.git
+[submodule "lab_description"]
+	path = lab_description
+	url = git@gits-15.sys.kth.se:frekle/lab_description.git
+[submodule "lib_moment_arm"]
+	path = lib_moment_arm
+	url = git@gits-15.sys.kth.se:frekle/lib_moment_arm.git
+[submodule "mobl_description"]
+	path = mobl_description
+	url = git@gits-15.sys.kth.se:frekle/mobl_description.git
+[submodule "moveit_human"]
+	path = moveit_human
+	url = git@gits-15.sys.kth.se:frekle/moveit_human.git
+[submodule "osrt_ros"]
+	path = osrt_ros
+	url = git@gits-15.sys.kth.se:frekle/osrt_ros.git
+[submodule "test_osrt_ros"]
+	path = test_osrt_ros
+	url = git@gits-15.sys.kth.se:frekle/test_osrt_ros.git
+[submodule "ximu3_ros"]
+	path = ximu3_ros
+	url = git@github.com:opensimrt-ros/ximu3_ros.git
+[submodule "video_stream_opencv"]
+	path = video_stream_opencv
+	url = https://github.com/ros-drivers/video_stream_opencv.git
+[submodule "vicon_sync"]
+	path = vicon_sync
+	url = git@gits-15.sys.kth.se:frekle/vicon_sync.git
+[submodule "tmux_session"]
+	path = tmux_session
+	url = git@github.com-frederico-klein:opensimrt-ros/tmux_session.git
+[submodule "realsense-ros"]
+	path = realsense-ros
+	url = https://github.com/IntelRealSense/realsense-ros.git
