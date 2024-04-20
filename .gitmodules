@@ -76,3 +76,9 @@
 [submodule "usb_cam"]
 	path = usb_cam
 	url = https://github.com/ros-drivers/usb_cam.git
+[submodule "acquisition_state_machines/flexbe_behavior_engine"]
+	path = acquisition_state_machines/flexbe_behavior_engine
+	url = https://github.com/FlexBE/flexbe_behavior_engine.git
+[submodule "acquisition_state_machines/flexbe_app"]
+	path = acquisition_state_machines/flexbe_app
+	url = https://github.com/FlexBE/flexbe_app.git
