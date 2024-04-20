@@ -82,3 +82,9 @@
 [submodule "acquisition_state_machines/flexbe_app"]
 	path = acquisition_state_machines/flexbe_app
 	url = https://github.com/FlexBE/flexbe_app.git
+[submodule "acquisition_state_machines/acquisition_of_raw_data"]
+	path = acquisition_state_machines/acquisition_of_raw_data
+	url = git@gits-15.sys.kth.se:frekle/acquisition_of_raw_data.git
+[submodule "acquisition_state_machines/acquisition_fb_behaviors"]
+	path = acquisition_state_machines/acquisition_fb_behaviors
+	url = git@gits-15.sys.kth.se:frekle/acquisition_fb_behaviors.git
