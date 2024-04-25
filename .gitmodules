@@ -88,3 +88,6 @@
 [submodule "acquisition_state_machines/acquisition_fb_behaviors"]
 	path = acquisition_state_machines/acquisition_fb_behaviors
 	url = git@gits-15.sys.kth.se:frekle/acquisition_fb_behaviors.git
+[submodule "insoles/insole_republisher"]
+	path = insoles/insole_republisher
+	url = git@gits-15.sys.kth.se:ros-biomech/insole_republisher.git
