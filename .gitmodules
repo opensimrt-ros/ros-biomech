@@ -69,7 +69,7 @@
 	url = git@gits-15.sys.kth.se:frekle/vicon_sync.git
 [submodule "tmux_session"]
 	path = tmux_session
-	url = git@github.com-frederico-klein:opensimrt-ros/tmux_session.git
+	url = git@github.com:opensimrt-ros/tmux_session.git
 [submodule "realsense-ros"]
 	path = realsense-ros
 	url = https://github.com/IntelRealSense/realsense-ros.git
