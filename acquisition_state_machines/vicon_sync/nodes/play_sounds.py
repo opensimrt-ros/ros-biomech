@@ -8,7 +8,7 @@ def play_sound(req):
     rospy.loginfo("Play!")
     rc = -1
     while(rc != 0):
-        p = subprocess.Popen(["aplay","/catkin_ws/Calibration is r 1.wav"], stdin= subprocess.PIPE, stdout= subprocess.PIPE, stderr= subprocess.PIPE)
+        p = subprocess.Popen(["aplay","/srv/host_data/calib.wav"], stdin= subprocess.PIPE, stdout= subprocess.PIPE, stderr= subprocess.PIPE)
         output, err = p.communicate(b"")
         rc = p.returncode
         #print(rc)
