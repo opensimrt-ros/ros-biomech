@@ -91,3 +91,6 @@
 [submodule "insoles/insole_republisher"]
 	path = insoles/insole_republisher
 	url = https://github.com/opensimrt-ros/insole_republisher.git
+[submodule "tmux_launch"]
+	path = tmux_launch
+	url = https://github.com/frederico-klein/tmux_launch.git
