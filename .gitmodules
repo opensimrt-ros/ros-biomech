@@ -91,3 +91,6 @@
 [submodule "insoles/insole_republisher"]
 	path = insoles/insole_republisher
 	url = https://github.com/opensimrt-ros/insole_republisher.git
+[submodule "imu_delay_finder"]
+	path = imu_delay_finder
+	url = git@github.com:frederico-klein/imu_delay_finder.git
