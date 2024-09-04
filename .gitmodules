@@ -94,3 +94,6 @@
 [submodule "imu_delay_finder"]
 	path = imu_delay_finder
 	url = git@github.com:frederico-klein/imu_delay_finder.git
+[submodule "activity_detector"]
+	path = activity_detector
+	url = git@github.com:frederico-klein/activity_detector.git
