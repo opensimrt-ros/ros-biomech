@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(vicon_sync)
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -147,6 +148,19 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
+   ${catkin_LIBRARIES}
+   ${Boost_LIBRARIES}
+   )
+
+add_executable(remote_start_node src/remote_start_node.cpp)
+add_dependencies(remote_start_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(remote_start_node
+   ${catkin_LIBRARIES}
+   ${Boost_LIBRARIES}
+   )
+add_executable(remote_start src/remote_start.cpp)
+add_dependencies(remote_start ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(remote_start
    ${catkin_LIBRARIES}
    ${Boost_LIBRARIES}
    )
