@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<launch>
+	<arg name="port" 	default="1030" />
+	<arg name="remove_path_prefix" 				default="/srv/host_data" />
+	<arg name="append_path_prefix" 				default="d:/Vicon" />
+
+	<node pkg="vicon_sync" type="remote_start_node" 	name="vicon_control" output="screen">
+		<param name="port" 			value="$(arg port)" />
+
+		<param name="mode_timecode" 			value="false" />
+		<param name="mode_delay" 			value="false" />
+		
+		<!-- this is not working yet. you need to fix the docker package broadcasting routing tables for it to work -->
+		<param name="use_broadcast" 			value="false" />
+		
+		<param name="vicon_ip" 				value="192.168.1.102" />
+		
+		<param name="delay_ms" 				value="0" />
+		
+
+		<param name="remove_path_prefix" 				value="$(arg remove_path_prefix)" />
+		<param name="append_path_prefix" 				value="$(arg append_path_prefix)" />
+
+		<!-- this is wrong, it should be dynamic reconfigure or something -->
+		<param name="epoch_start" 			value="170000" />
+
+	</node>
+
+</launch>
+
