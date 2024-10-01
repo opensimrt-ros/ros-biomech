@@ -163,7 +163,6 @@ int main( int argc, char *argv[] )
 
 	// The packet ID is selected randomly.
 	// Packets with duplicate ID's are ignored by Nexus.
-	const unsigned int CaptureID = Random();
 
 	//.Set up ASIO for UDP broadcast.
 	boost::asio::io_service Service;
@@ -203,6 +202,7 @@ int main( int argc, char *argv[] )
 			CaptureDescription = description;
 
 
+			const unsigned int CaptureID = Random();
 			if(start || stop){
 				// Start capture.
 				if( start )

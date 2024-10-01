@@ -3,6 +3,7 @@
 	<arg name="port" 	default="1030" />
 	<arg name="remove_path_prefix" 				default="/srv/host_data" />
 	<arg name="append_path_prefix" 				default="d:/Vicon" />
+	<arg name="vicon_ip" 					default="192.168.1.102" />
 
 	<node pkg="vicon_sync" type="remote_start_node" 	name="vicon_control" output="screen">
 		<param name="port" 			value="$(arg port)" />
@@ -13,7 +14,7 @@
 		<!-- this is not working yet. you need to fix the docker package broadcasting routing tables for it to work -->
 		<param name="use_broadcast" 			value="false" />
 		
-		<param name="vicon_ip" 				value="192.168.1.102" />
+		<param name="vicon_ip" 				value="$(arg vicon_ip)" />
 		
 		<param name="delay_ms" 				value="0" />
 		
