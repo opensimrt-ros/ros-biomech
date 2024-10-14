@@ -26,3 +26,38 @@ Make sure to microcommit *and push*, and then later squash feature / bugfix bran
 
 Maybe this is a fault of my PS1 bar implementation, but it doesn't complain about untracked files. If you just go to a directory and don't type git status, you won't know if eveyrthing is committed either, so make sure you adjust to that. 
 
+
+## Random things:
+
+- Getting higher fps from the camera
+
+so I tried a bunch of different gstreamer configurations, but I couldn't get anything faster than what we are currently doing. 
+
+my best settings were:  
+     gst-launch-1.0 -v v4l2src device=/dev/video4 ! image/jpeg,framerate=60/1,width=1280, height=720  ! avdec_mjpeg ! videoconvert ! autovideosink
+
+you can use something like:
+
+				std::string cameraPipeline;
+				cameraPipeline ="v4l2src device=/dev/video0 extra-controls=\"c,exposure_auto=1,exposure_absolute=500\" ! ";
+				cameraPipeline+="video/x-raw, format=BGR, framerate=30/1, width=(int)1280,height=(int)720 ! ";
+				cameraPipeline+="appsink";
+
+				VideoCapture cap;
+				cap.open(cameraPipeline);
+
+To setup the camera (you can edit video_stream_opencv) to easily test this, but the computer doesn't seem fast enough to deal with these options. 
+
+best options for 60hz video:
+
+gst-launch-1.0 -v v4l2src device=/dev/video4 extra-controls="c,exposure_auto=3" ! image/jpeg,framerate=60/1
+,width=640, height=480  ! avdec_mjpeg ! videoconvert ! autovideosink
+
+best options for 120Hz video:
+
+gst-launch-1.0 -v v4l2src device=/dev/video4 extra-controls="c,exposure_auto=3" ! image/jpeg,framerate=120/1
+,width=640, height=480  ! avdec_mjpeg ! videoconvert ! autovideosink
+
+checkout options with:
+
+     v4l2-ctl -d /dev/video4 --all 
