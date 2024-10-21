@@ -128,18 +128,18 @@ class Video(ATest):
 
     def run(self):
         if not os.path.exists(self.videodev):
-            return f"Critical: device does not exist {self.videodev}"
+            return f"{self.criticality} device does not exist {self.videodev}"
         cam = cv2.VideoCapture(self.dev)
         try:
             ret, frame = cam.read()
 
             if not ret:
-                return f'{self.criticality}: Could not read from capture device {self.dev}'
+                return f'{self.criticality} Could not read from capture device {self.dev}'
             cam.release()
 
             return 'OK'
         except:
-                return f'{self.criticality}: Could not read from capture device {self.dev}'
+                return f'{self.criticality} Could not read from capture device {self.dev}'
 
     def troubleshootingmsg(self):
         return ["You need to connect the external USB camera before starting the docker.","Maybe you don't want the camera?"]
