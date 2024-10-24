@@ -128,6 +128,7 @@ class MyPlugin(Plugin):
         self.subject_id = ""
         self.session_num = ""
         self.save_path = ""
+        self.description_text = ""
 
         self.set_from_params()
 
@@ -142,6 +143,7 @@ class MyPlugin(Plugin):
             #print_events(self._widget.model_selector)
         self.sr = rospy.Service("/rqt_acquisition/set_running", Empty, self.set_running)
         self.sw = rospy.Service("/rqt_acquisition/update_widgets", Empty, self.update_widget_states)
+        self.sp = rospy.Service("/rqt_acquisition/refresh_paths", Empty, self.refresh_path_service)
         context.add_widget(self._widget)
         
     def set_running(self, req = None):    
@@ -162,18 +164,23 @@ class MyPlugin(Plugin):
             
     def set_to_params(self):
         rospy.logwarn("set_to_params")
-        the_params = {  "model_path"    :self.model_path,
-                        "lib_path"      :self.lib_path,
-                        "activity_name" :self.activity_name,
-                        "subject_id"    :self.subject_id,
-                        "session_num"   :self.session_num,
-                        "save_path"     :self.save_path}
+        the_params = {  "model_path"        :self.model_path,
+                        "lib_path"          :self.lib_path,
+                        "activity_name"     :self.activity_name,
+                        "subject_id"        :self.subject_id,
+                        "session_num"       :self.session_num,
+                        "save_path"         :self.save_path,
+                        "description_text"  :self.description_text}
 
         rospy.logwarn(the_params)
         for key, value in the_params.items():
             rospy.set_param(f"/{self.my_namespace}/{key}", value )
+        rospy.logwarn("what I got: "+str(rospy.get_param(f"/{self.my_namespace}")))
         #self.update_widget_states()
         
+    def refresh_path_service(self, req = None):
+        self.set_from_params()
+        return EmptyResponse()
 
     def update_widget_states(self, req = None):
         rospy.logwarn("updating widget states")
@@ -227,6 +234,7 @@ class MyPlugin(Plugin):
 
         self._widget.resolved_path_name.setText(   self.save_path )
         self.activity_name = self._widget.activity_name.text()
+        self.description_text = self._widget.description.toPlainText()
         self.set_to_params()
 
     def update_things(self, event=None):
@@ -266,6 +274,7 @@ class MyPlugin(Plugin):
     def eventFilter(self, source, event):
         rospy.logdebug("something")
         self.update_things()
+        self.update_paths()
         if not sip.isdeleted(self._widget.model_selector) and source is self._widget.model_selector.viewport():
             rospy.logdebug("i am from the model selector")
             if isinstance(event, QtGui.QMouseEvent):
