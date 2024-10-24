@@ -7,10 +7,11 @@ import rospkg
 
 from qt_gui.plugin import Plugin
 from python_qt_binding import loadUi
-from python_qt_binding.QtWidgets import QWidget, QFileSystemModel, QTreeView, QDirModel
+from python_qt_binding.QtWidgets import QWidget, QFileSystemModel, QTreeView, QDirModel, QTreeWidgetItemIterator
 from python_qt_binding.QtGui import QIcon
 import python_qt_binding.QtGui as QtGui
 import python_qt_binding.QtCore as QtCore
+from std_srvs.srv import Empty, EmptyResponse
 
 def print_events(obj):
     rospy.loginfo(obj)
@@ -45,6 +46,9 @@ class MyPlugin(Plugin):
         super(MyPlugin, self).__init__(context)
         # Give QObjects reasonable names
         self.setObjectName('MyPlugin')
+
+
+
 
         # Process standalone plugin command-line arguments
         from argparse import ArgumentParser
@@ -87,6 +91,7 @@ class MyPlugin(Plugin):
             model = QFileSystemModel()
 
             model.setRootPath("/srv/host_data/models")
+            #model.setRootPath("/srv/host_data/")
             model.removeColumns(1,2)
             model.setNameFilters(["*.osim"])
             model.setNameFilterDisables(False)
@@ -114,8 +119,8 @@ class MyPlugin(Plugin):
             
             self._widget.model_selector.viewport().installEventFilter(self)
 
+        self.my_namespace = 'rqt_acquisition'
 
-        
         self.model_path = ""
         self.lib_path = ""
         self.lib_path_exists = False
@@ -123,6 +128,8 @@ class MyPlugin(Plugin):
         self.subject_id = ""
         self.session_num = ""
         self.save_path = ""
+
+        self.set_from_params()
 
         print_events(self._widget.activity_name)
         
@@ -133,7 +140,79 @@ class MyPlugin(Plugin):
 
 
             #print_events(self._widget.model_selector)
+        self.sr = rospy.Service("/rqt_acquisition/set_running", Empty, self.set_running)
+        self.sw = rospy.Service("/rqt_acquisition/update_widgets", Empty, self.update_widget_states)
         context.add_widget(self._widget)
+        
+    def set_running(self, req = None):    
+        self._widget.model_group.setEnabled(False)
+        return EmptyResponse()
+
+    def set_from_params(self):
+        rospy.logwarn("set_from_params")
+        if rospy.has_param(self.my_namespace):
+            my_dic = rospy.get_param(self.my_namespace)
+            for key, value in my_dic.items():
+                setattr(self, key, value)
+            self._was_set_to_params = False ## this means that my information is NOT current
+        else:
+            rospy.logwarn("rqt_acquisition params are not set, they will be set to something.")
+            self.set_to_params()
+        self.update_widget_states()
+            
+    def set_to_params(self):
+        rospy.logwarn("set_to_params")
+        the_params = {  "model_path"    :self.model_path,
+                        "lib_path"      :self.lib_path,
+                        "activity_name" :self.activity_name,
+                        "subject_id"    :self.subject_id,
+                        "session_num"   :self.session_num,
+                        "save_path"     :self.save_path}
+
+        rospy.logwarn(the_params)
+        for key, value in the_params.items():
+            rospy.set_param(f"/{self.my_namespace}/{key}", value )
+        #self.update_widget_states()
+        
+
+    def update_widget_states(self, req = None):
+        rospy.logwarn("updating widget states")
+        self._widget.resolved_path_name.setText(   self.save_path )
+        self._widget.model_selected_name.setText(self.model_path)
+        self.lib_path_exists, self.lib_path = check_if_lib_moment_arm_exists_at_path(self.model_path)
+        if self.lib_path_exists:
+            self._widget.lib_moment_arm_text.setText("[V] "+self.lib_path)
+        else:
+            self._widget.lib_moment_arm_text.setText("[X] "+self.lib_path)
+        self._widget.subject_id_name.setText(self.subject_id)
+        self._widget.activity_name.setText(self.activity_name)
+        self._widget.session_name.setText(self.session_num)
+
+        ## now update the tree widget
+
+        #model = self._widget.model_selector.model()
+        #model.setRootPath(self.model_path)
+        #self._widget.model_selector.setModel(model)
+        #self._widget.model_selector.reset()
+        #self._widget.model_selector.update()
+        #index = self._widget.model_selector.selectedIndexes()[0]
+        #rospy.logwarn(index)
+        #self._widget.model_selector.setExpanded(index, True)
+        
+
+        #https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QTreeWidgetItemIterator.html#PySide6.QtWidgets.QTreeWidgetItemIterator
+        
+        #it = QTreeWidgetItemIterator(self._widget.model_selector)
+        #while it:
+        #    index = self._widget.model_selector.indexFromItem(it)
+        #    info = self._widget.model_selector.model().fileInfo(index)
+        #    if info.absoluteFilePath() == self.model_path:
+        #        (it).setSelected(True)
+        #        break
+        #    it += 1
+
+        return EmptyResponse()
+
     def update_paths(self, event=None):
         ## update save_path from subjectid activity and session
         self.subject_id = self._widget.subject_id_name.text()
@@ -148,6 +227,7 @@ class MyPlugin(Plugin):
 
         self._widget.resolved_path_name.setText(   self.save_path )
         self.activity_name = self._widget.activity_name.text()
+        self.set_to_params()
 
     def update_things(self, event=None):
         self.model_path = self._widget.model_selected_name.text()
@@ -156,6 +236,7 @@ class MyPlugin(Plugin):
             self._widget.lib_moment_arm_text.setText("[V] "+self.lib_path)
         else:
             self._widget.lib_moment_arm_text.setText("[X] "+self.lib_path)
+        self.set_to_params()
             
 
 
@@ -164,9 +245,12 @@ class MyPlugin(Plugin):
     
     def _handle_start_clicked(self):
         rospy.loginfo("start clicked!")
-    
+        self.set_from_params()
+        self.set_running()
+
     def _handle_stop_clicked(self):
         rospy.loginfo("stop clicked!")
+        self.set_from_params()
 
     def _handle_model_changed_keypress(self,event):
 
@@ -192,14 +276,15 @@ class MyPlugin(Plugin):
                 #rospy.loginfo(event.modifiers())
                 if event.type() == QtCore.QEvent.MouseButtonDblClick:
                     #rospy.logwarn('meta-double-click')
-                    index = self._widget.model_selector.selectedIndexes()[0]
-                    info = self._widget.model_selector.model().fileInfo(index)
-                    if ".osim" in info.absoluteFilePath():
-                        self.model_path = info.absoluteFilePath()
-                        self._widget.model_selected_name.setText(self.model_path)
-                        #rospy.logwarn(self.model_path)
-                        self.lib_path_exists, self.lib_path = check_if_lib_moment_arm_exists_at_path(self.model_path) 
-                    return True
+                    if self._widget.model_selector.selectedIndexes():
+                        index = self._widget.model_selector.selectedIndexes()[0]
+                        info = self._widget.model_selector.model().fileInfo(index)
+                        if ".osim" in info.absoluteFilePath():
+                            self.model_path = info.absoluteFilePath()
+                            self._widget.model_selected_name.setText(self.model_path)
+                            #rospy.logwarn(self.model_path)
+                            self.lib_path_exists, self.lib_path = check_if_lib_moment_arm_exists_at_path(self.model_path) 
+                        return True
                 ## this is not working
                 if event.modifiers() == QtCore.Qt.MetaModifier:
                     rospy.loginfo("i am a MetaModifier")
